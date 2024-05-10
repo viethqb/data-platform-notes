@@ -1,0 +1,68 @@
+services:
+  master-1:
+    hostname: master-1
+    container_name: master-1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      kubernetes_network:
+        ipv4_address: 172.25.2.3
+  master-2:
+    hostname: master-2
+    container_name: master-2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      kubernetes_network:
+        ipv4_address: 172.25.2.4
+  master-3:
+    hostname: master-3
+    container_name: master-3
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      kubernetes_network:
+        ipv4_address: 172.25.2.5
+  worker-1:
+    hostname: worker-1
+    container_name: worker-1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      kubernetes_network:
+        ipv4_address: 172.25.2.6
+  worker-2:
+    hostname: worker-2
+    container_name: worker-2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      kubernetes_network:
+        ipv4_address: 172.25.2.7
+  worker-3:
+    hostname: worker-3
+    container_name: worker-3
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      kubernetes_network:
+        ipv4_address: 172.25.2.8
+networks:
+  kubernetes_network:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.25.2.0/24
+         gateway: 172.25.2.1
