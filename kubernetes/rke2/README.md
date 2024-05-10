@@ -1,6 +1,26 @@
 ## Prepare
-https://docs.expertflow.com/cx/4.3/rke2-deployment-in-high-availability-with-kube-vip#id-(4.3)RKE2DeploymentinHighAvailabilityWithKube-VIP-OpenEBSforLocalStorage
+Source: https://docs.expertflow.com/cx/4.3/rke2-deployment-in-high-availability-with-kube-vip#id-(4.3)RKE2DeploymentinHighAvailabilityWithKube-VIP-OpenEBSforLocalStorage
 
+### Install sysbox runtime
+
+```bash
+## https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md#installing-sysbox
+
+wget https://downloads.nestybox.com/sysbox/releases/v0.6.4/sysbox-ce_0.6.4-0.linux_amd64.deb
+docker rm $(docker ps -a -q) -f
+sudo apt-get install jq
+sudo apt-get install ./sysbox-ce_0.6.4-0.linux_amd64.deb
+```
+
+### Start docker container like VM
+
+```bash
+docker-compose up -d
+docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} {{ .Name }}' | sed 's/ \// /'
+#ssh user: admin(root)/admin
+```
+
+### Add ssh key
 ```
 ssh-keygen
 ssh-copy-id root@172.25.2.3
