@@ -1,10 +1,10 @@
-## K3s HA with external lb Architecture
+## K3s HA With External Load Balance Architecture
 
 ![Architecture](./k3s-ha-external-lb-architecture.png)
 ## Prepare
 Source: https://docs.expertflow.com/cx/4.3/rke2-deployment-in-high-availability-with-kube-vip#id-(4.3)RKE2DeploymentinHighAvailabilityWithKube-VIP-OpenEBSforLocalStorage
 
-### Install sysbox runtime
+### Install Sysbox Runtime
 
 ```bash
 ## https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md#installing-sysbox
@@ -15,7 +15,7 @@ sudo apt-get install jq
 sudo apt-get install ./sysbox-ce_0.6.4-0.linux_amd64.deb
 ```
 
-### Start docker container like VM
+### Start Docker Container Like VM
 
 ```bash
 docker-compose up -d
@@ -30,7 +30,7 @@ docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Netw
 # 172.25.1.7 worker-2
 ```
 
-### Add ssh key and change machine-id
+### Add SSH Key And Change Machine Id
 ```
 ssh-keygen
 ssh-copy-id root@172.25.1.2
@@ -51,7 +51,7 @@ ssh root@172.25.1.8 'echo $(uuidgen) > /etc/machine-id'
 ```
 
 
-## Install and config HAProxy (loadbalancer)
+## Install and Config HAProxy (loadbalancer)
 ```
 ssh root@172.25.1.2
 apt-get install -y haproxy
@@ -107,16 +107,15 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=DC87A250BCBA499994CF808CEADD1BCC INSTAL
 curl -sfL https://get.k3s.io | K3S_TOKEN=DC87A250BCBA499994CF808CEADD1BCC INSTALL_K3S_VERSION=v1.29.4+k3s1 sh -s - agent --server https://172.25.1.2:6443
 ```
 
-### Copy kubectl config
+### Copy kubectl Config
 
 ```bash
 scp root@172.25.1.3:/etc/rancher/k3s/k3s.yaml .
 sed -i -e 's/127.0.0.1/172.25.1.2/g' ./k3s.yaml
-
 k get no --kubeconfig ./k3s.yaml
 ```
 
-### install Nginx ingress
+### install Nginx Ingress
 
 ```
 export KUBECONFIG=./k3s.yaml
@@ -148,10 +147,10 @@ helm upgrade --install longhorn longhorn/longhorn --namespace longhorn-system --
 # persistence.defaultClassReplicaCount: 3
 # defaultSettings.defaultDataPath: /var/lib/longhorn/
 
-ssh root@172.25.1.3 'mount --make-rshared /'
-ssh root@172.25.1.4 'mount --make-rshared /'
-ssh root@172.25.1.5 'mount --make-rshared /'
-ssh root@172.25.1.6 'mount --make-rshared /'
-ssh root@172.25.1.7 'mount --make-rshared /'
-ssh root@172.25.1.8 'mount --make-rshared /'
+# ssh root@172.25.1.3 'mount --make-rshared /'
+# ssh root@172.25.1.4 'mount --make-rshared /'
+# ssh root@172.25.1.5 'mount --make-rshared /'
+# ssh root@172.25.1.6 'mount --make-rshared /'
+# ssh root@172.25.1.7 'mount --make-rshared /'
+# ssh root@172.25.1.8 'mount --make-rshared /'
 ```

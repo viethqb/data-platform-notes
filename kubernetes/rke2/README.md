@@ -1,11 +1,11 @@
-## RKE2 HA with VIP lb Architecture
+## RKE2 HA With VIP Load Balance Architecture
 
 ![Architecture](./rke2-ha-vip-architecture.png)
 
 ## Prepare
 Source: https://docs.expertflow.com/cx/4.3/rke2-deployment-in-high-availability-with-kube-vip#id-(4.3)RKE2DeploymentinHighAvailabilityWithKube-VIP-OpenEBSforLocalStorage
 
-### Install sysbox runtime
+### Install Sysbox Runtime
 
 ```bash
 ## https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md#installing-sysbox
@@ -16,7 +16,7 @@ sudo apt-get install jq
 sudo apt-get install ./sysbox-ce_0.6.4-0.linux_amd64.deb
 ```
 
-### Start docker container like VM
+### Start Docker Container Like VM
 
 ```bash
 docker-compose up -d
@@ -30,7 +30,7 @@ docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Netw
 # 172.25.2.7 worker-2
 ```
 
-### Add ssh key and change machine-id
+### Add SSH Key And Change Machine Id
 ```
 ssh-keygen
 ssh-copy-id root@172.25.2.3
@@ -185,7 +185,7 @@ curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE=agent sh -
 systemctl start rke2-agent.service
 systemctl enable  rke2-agent.service
 ```
-## Copy k8s config
+## Copy kubectl config
 ```
 scp root@172.25.2.3:/etc/rancher/rke2/rke2.yaml .
 sed -i -e 's/127.0.0.1/172.25.2.2/g' ./rke2.yaml
