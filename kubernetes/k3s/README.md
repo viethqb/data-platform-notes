@@ -138,7 +138,7 @@ helm upgrade --install minio -n minio -f ../../charts/minio/minio-values.yaml ..
 ### Install Longhorn (Optional)
 By default, K3S uses local-path-propioner as a Storage Class.
 We can use other Storage such as Longhorn, Openebs, ...
-The environment that is used to lab is the docker container so another Storage works well. You can lab other Storage on VM environment.
+The environment that is used to lab is the docker container so another Storage is not doing well. You can lab other Storage on VM environment.
 
 ```
 helm repo add longhorn https://charts.longhorn.io
