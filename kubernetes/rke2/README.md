@@ -1,3 +1,7 @@
+## RKE2 HA with VIP lb Architecture
+
+![Architecture](./rke2-ha-vip-architecture.png)
+
 ## Prepare
 Source: https://docs.expertflow.com/cx/4.3/rke2-deployment-in-high-availability-with-kube-vip#id-(4.3)RKE2DeploymentinHighAvailabilityWithKube-VIP-OpenEBSforLocalStorage
 
@@ -18,9 +22,15 @@ sudo apt-get install ./sysbox-ce_0.6.4-0.linux_amd64.deb
 docker-compose up -d
 docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} {{ .Name }}' | sed 's/ \// /'
 #ssh user: admin(root)/admin
+# 172.25.2.4 master-2
+# 172.25.2.5 master-3
+# 172.25.2.8 worker-3
+# 172.25.2.6 worker-1
+# 172.25.2.3 master-1
+# 172.25.2.7 worker-2
 ```
 
-### Add ssh key
+### Add ssh key and change machine-id
 ```
 ssh-keygen
 ssh-copy-id root@172.25.2.3
@@ -30,7 +40,6 @@ ssh-copy-id root@172.25.2.6
 ssh-copy-id root@172.25.2.7
 ssh-copy-id root@172.25.2.8 
 
-ssh root@172.25.2.2 'echo $(uuidgen) > /etc/machine-id'
 ssh root@172.25.2.3 'echo $(uuidgen) > /etc/machine-id'
 ssh root@172.25.2.4 'echo $(uuidgen) > /etc/machine-id'
 ssh root@172.25.2.5 'echo $(uuidgen) > /etc/machine-id'

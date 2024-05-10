@@ -1,4 +1,10 @@
-## Install sysbox runtime
+## K3s HA with external lb Architecture
+
+![Architecture](./k3s-ha-external-lb-architecture.png)
+## Prepare
+Source: https://docs.expertflow.com/cx/4.3/rke2-deployment-in-high-availability-with-kube-vip#id-(4.3)RKE2DeploymentinHighAvailabilityWithKube-VIP-OpenEBSforLocalStorage
+
+### Install sysbox runtime
 
 ```bash
 ## https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md#installing-sysbox
@@ -9,15 +15,22 @@ sudo apt-get install jq
 sudo apt-get install ./sysbox-ce_0.6.4-0.linux_amd64.deb
 ```
 
-## Start docker container like VM
+### Start docker container like VM
 
 ```bash
 docker-compose up -d
 docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} {{ .Name }}' | sed 's/ \// /'
 #ssh user: admin(root)/admin
+# 172.25.1.2 loadbalancer
+# 172.25.1.4 master-2
+# 172.25.1.5 master-3
+# 172.25.1.8 worker-3
+# 172.25.1.6 worker-1
+# 172.25.1.3 master-1
+# 172.25.1.7 worker-2
 ```
 
-## ssh_key
+### Add ssh key and change machine-id
 ```
 ssh-keygen
 ssh-copy-id root@172.25.1.2
@@ -27,11 +40,8 @@ ssh-copy-id root@172.25.1.5
 ssh-copy-id root@172.25.1.6
 ssh-copy-id root@172.25.1.7
 ssh-copy-id root@172.25.1.8 
-```
 
-## Change /etc/machine-id
-```bash
-ssh root@172.25.1.2 'echo $(uuidgen) > /etc/machine-id && apt-get update && apt-get install -y haproxy'
+ssh root@172.25.1.2 'echo $(uuidgen) > /etc/machine-id'
 ssh root@172.25.1.3 'echo $(uuidgen) > /etc/machine-id'
 ssh root@172.25.1.4 'echo $(uuidgen) > /etc/machine-id'
 ssh root@172.25.1.5 'echo $(uuidgen) > /etc/machine-id'
@@ -41,12 +51,10 @@ ssh root@172.25.1.8 'echo $(uuidgen) > /etc/machine-id'
 ```
 
 
-
-## Add the following lines to the end of the /etc/haproxy/haproxy.cfg
-
+## Install and config HAProxy (loadbalancer)
 ```
 ssh root@172.25.1.2
-
+apt-get install -y haproxy
 cat >>/etc/haproxy/haproxy.cfg<<EOF
 
 frontend kubernetes-frontend
@@ -69,18 +77,14 @@ listen stats
    stats enable
    stats uri /
 EOF
-```
 
-## Start haproxy.service
-
-```
 systemctl start haproxy.service
 systemctl status haproxy.service
 ```
 
 ## Install k3s
 
-### Master-1
+### Prepare First Master node (Master 1)
 
 ```bash
 curl -sfL https://get.k3s.io | K3S_TOKEN=DC87A250BCBA499994CF808CEADD1BCC INSTALL_K3S_VERSION=v1.29.4+k3s1 sh -s - server \
@@ -89,7 +93,7 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=DC87A250BCBA499994CF808CEADD1BCC INSTAL
     --tls-san=172.25.1.2
 ```
 
-### Master-2, 3
+### Remaining Master Nodes (Master 2, 3)
 
 ```bash
 curl -sfL https://get.k3s.io | K3S_TOKEN=DC87A250BCBA499994CF808CEADD1BCC INSTALL_K3S_VERSION=v1.29.4+k3s1 sh -s - server \
@@ -98,7 +102,7 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=DC87A250BCBA499994CF808CEADD1BCC INSTAL
     --tls-san=172.25.1.2
 ```
 
-### Worker-1, 2, 3
+### Deploy Worker Nodes (Worker 1, 2, 3)
 ```bash
 curl -sfL https://get.k3s.io | K3S_TOKEN=DC87A250BCBA499994CF808CEADD1BCC INSTALL_K3S_VERSION=v1.29.4+k3s1 sh -s - agent --server https://172.25.1.2:6443
 ```
@@ -131,9 +135,12 @@ helm upgrade --install minio -n minio -f ../../charts/minio/minio-values.yaml ..
 # go to http://minio.lakehouse.local
 ```
 
-### Install Longhorn
+### Install Longhorn (Optional)
+By default, K3S uses local-path-propioner as a Storage Class.
+We can use other Storage such as Longhorn, Openebs, ...
+The environment that is used to lab is the docker container so another store works well. You can lab other Storage on VM environment.
+
 ```
-# Longhorn not work trên môi trường container. Thử  lại trên môi trường VM
 helm repo add longhorn https://charts.longhorn.io
 helm repo update
 helm upgrade --install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version 1.6.1 --debug
