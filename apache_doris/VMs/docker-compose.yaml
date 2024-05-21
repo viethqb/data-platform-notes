@@ -1,0 +1,38 @@
+services:
+  doris-1:
+    hostname: doris-1
+    container_name: doris-1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      doris_network:
+        ipv4_address: 172.25.2.3
+  doris-2:
+    hostname: doris-2
+    container_name: doris-2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      doris_network:
+        ipv4_address: 172.25.2.4
+  doris-3:
+    hostname: doris-3
+    container_name: doris-3
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      doris_network:
+        ipv4_address: 172.25.2.5
+networks:
+  doris_network:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.25.2.0/24
+         gateway: 172.25.2.1
