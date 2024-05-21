@@ -14,7 +14,7 @@ spec:
     name: root
     password: "12345678"
   feSpec:
-    replicas: 1
+    replicas: 3
     image: selectdb/doris.fe-ubuntu:2.1.1
     service:
       type: NodePort
