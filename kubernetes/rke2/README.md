@@ -31,7 +31,7 @@ docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Netw
 ```
 
 ### Add SSH Key And Change Machine Id
-```
+```bash
 ssh-keygen
 ssh-copy-id root@172.25.2.3
 ssh-copy-id root@172.25.2.4
@@ -50,7 +50,7 @@ ssh root@172.25.2.8 'echo $(uuidgen) > /etc/machine-id'
 
 ## Step 1: Prepare First Control Plane (Master 1)
 
-```
+```bash
 mkdir -p /etc/rancher/rke2/
 mkdir -p  /var/lib/rancher/rke2/server/manifests/
 
@@ -119,7 +119,7 @@ kubectl  get ds -n kube-system  kube-vip-ds
 
 ## Step 2: Remaining Control-Plane Nodes (Master 2, 3)
 
-```
+```bash
 mkdir -p /etc/rancher/rke2/
 mkdir -p  /var/lib/rancher/rke2/server/manifests/
 
@@ -171,7 +171,7 @@ source ~/.bashrc
 
 ## Step 3: Deploy Worker Nodes (Worker 1, 2, 3)
 
-```
+```bash
 mkdir -p /etc/rancher/rke2/
 
 cat<<EOF|tee /etc/rancher/rke2/config.yaml
@@ -186,14 +186,14 @@ systemctl start rke2-agent.service
 systemctl enable  rke2-agent.service
 ```
 ## Copy kubectl config
-```
+```bash
 scp root@172.25.2.3:/etc/rancher/rke2/rke2.yaml .
 sed -i -e 's/127.0.0.1/172.25.2.2/g' ./rke2.yaml
 k get no --kubeconfig ./rke2.yaml
 ```
 
 ## Install local-path-storage
-```
+```bash
 export KUBECONFIG=./rke2.yaml
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.26/deploy/local-path-storage.yaml
 kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
@@ -201,7 +201,7 @@ kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storagec
 
 ## TEST
 
-```
+```bash
 helm upgrade --install minio -n minio -f ../../charts/minio/minio-values.yaml ../../charts/minio --create-namespace --debug
 
 # add new row to /etc/hosts 

@@ -5,3 +5,14 @@ users:
     shell: /usr/bin/bash
     ssh_authorized_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDlwk7Eh6Z+iDobNdDioUcqhz2coB3hu7QPg/j9MwqVYh0U8gO6IdCLP3OhQ/hUG8bOohAZd8w0B4FTGJLlX4kiC1Kz6HiETmRIf4wHbZ+M1ExUnTwWy2ROLMy3kqewHYltqZKGfjf0uC7JozEuYBe0Su/1xT3ein7zyNONlR+3PuKP9FX//lDQOREGDIUvobg+5fwixAOKbGXq5odcWs1jSLMeBGDTTgfQvMNrmOge1nwP/fNvJ+gbLQesxDyJWUjz3G3Ffnu8aeZ4Bc/fvPGODJ/kwrM1k3AniVBsu24iKiZSHQCvWtwl3WvKvFnhyKw1sMSKiWtvyE4FaMaMgUsDsGWv6ZqXw5NqJgWXkg5906LXgf/53GPdC9E9sapd/rNDseXPRnVB3SV3ABqcdxNPIXQfM8zgtLz14cjMCu+Ex9S4rwO2AjXPdZsVkQtqTPLMpxVe106pgXSVzEw5/0IB1GrLlufnxpOpl5hT3+k+91kd0ZKNot2ehIVg+jMiEx8= viethq@viethq-ubuntu
+packages:
+  - open-iscsi
+  - nfs-common
+runcmd:
+  - cp /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.bak
+  - sed -i -e '13i\            nameservers:' /etc/netplan/50-cloud-init.yaml
+  - sed -i -e '14i\                addresses:\ [8.8.8.8, 8.8.4.4]' /etc/netplan/50-cloud-init.yaml
+  - netplan apply
+  - systemd-resolve --status | grep 'DNS Servers' -A2
+  - DEBIAN_FRONTEND=noninteractive  apt-get update -y && apt-get upgrade -y
+  - apt-get -y autoremove

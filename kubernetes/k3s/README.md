@@ -1,8 +1,6 @@
 ## K3s HA With External Load Balance Architecture
 
 ![Architecture](./k3s-ha-external-lb-architecture.png)
-## Prepare
-Source: https://docs.expertflow.com/cx/4.3/rke2-deployment-in-high-availability-with-kube-vip#id-(4.3)RKE2DeploymentinHighAvailabilityWithKube-VIP-OpenEBSforLocalStorage
 
 ### Install Sysbox Runtime
 
