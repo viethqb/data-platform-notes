@@ -1,0 +1,54 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+
+Vagrant.configure(2) do |config|
+
+  config.vm.provision "shell", path: "bootstrap.sh"
+
+  # Load Balancer Node
+  config.vm.define "loadbalancer" do |lb|
+    lb.vm.box = "generic/ubuntu2204"
+    lb.vm.hostname = "loadbalancer"
+    lb.vm.network "private_network", ip: "172.16.16.100"
+    lb.vm.provider "virtualbox" do |v|
+      v.name = "loadbalancer"
+      v.memory = 2048
+      v.cpus = 1
+    end
+  end
+
+  MasterCount = 3
+
+  # Kubernetes Master Nodes
+  (1..MasterCount).each do |i|
+    config.vm.define "kmaster#{i}" do |masternode|
+      masternode.vm.box = "generic/ubuntu2204"
+      masternode.vm.hostname = "kmaster#{i}"
+      masternode.vm.network "private_network", ip: "172.16.16.10#{i}"
+      masternode.vm.provider "virtualbox" do |v|
+        v.name = "kmaster#{i}"
+        v.memory = 2048
+        v.cpus = 2
+      end
+    end
+  end
+
+  NodeCount = 3
+
+  # Kubernetes Worker Nodes
+  (1..NodeCount).each do |i|
+    config.vm.define "kworker#{i}" do |workernode|
+      workernode.vm.box = "generic/ubuntu2204"
+      workernode.vm.hostname = "kworker#{i}"
+      workernode.vm.network "private_network", ip: "172.16.16.20#{i}"
+      workernode.vm.provider "virtualbox" do |v|
+        v.name = "kworker#{i}"
+        v.memory = 4096
+        v.cpus = 1
+      end
+    end
+  end
+
+end
