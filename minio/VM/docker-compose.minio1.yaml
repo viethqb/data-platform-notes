@@ -1,0 +1,27 @@
+services:
+  minio1: # sửa tương ứng với các node minio
+    hostname: minio1 # sửa tương ứng với các node minio
+    container_name: minio1 # sửa tương ứng với các node minio
+    image: quay.io/minio/minio:RELEASE.2024-03-30T09-41-56Z
+    command: server --console-address ":9001" http://minio{1...4}/data-{1...4}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    extra_hosts:
+      - "minio1:172.16.16.101"
+      - "minio2:172.16.16.102"
+      - "minio3:172.16.16.103"
+      - "minio4:172.16.16.104"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password
+    volumes:
+      - /data/minio/data-1:/data-1
+      - /data/minio/data-2:/data-2
+      - /data/minio/data-3:/data-3
+      - /data/minio/data-4:/data-4
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
