@@ -22,5 +22,4 @@ additionalCatalogs:
     hive.s3.socket-timeout=3m
     hive.non-managed-table-writes-enabled=true
     hive.storage-format=ORC
-    hive.allow-drop-table=true
     hive.partition-projection-enabled=true

@@ -121,7 +121,7 @@ WITH
     partitioning = ARRAY[ 'y', 'm' ]
 );
 
-insert into lakehouse.raw.yellow_tripdata_trino_iceberg
+trino> insert into lakehouse.raw.yellow_tripdata_trino_iceberg
 select * from lakehouse.raw.yellow_tripdata;
 ```
 
