@@ -9,7 +9,8 @@ producer = KafkaProducer(bootstrap_servers="192.168.221.215:30664")
 
 total_processed = 0
 i = 1
-df = pd.read_parquet("/home/viethq/Downloads/yellow_tripdata_2024-03.parquet")
+df = pd.read_parquet("./yellow_tripdata.csv")
+
 count = 0
 for index, row in df.sample(n=1000).iterrows():
     producer.send("my-topic", bytes(row.to_json(), "utf-8"))
