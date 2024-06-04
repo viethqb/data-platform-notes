@@ -18,5 +18,16 @@ spec:
     store.url: http://192.168.221.203:9000
     storage.class: io.confluent.connect.s3.storage.S3Storage
     format.class: io.confluent.connect.s3.format.json.JsonFormat
-    partitioner.class: io.confluent.connect.storage.partitioner.DefaultPartitioner
+    partitioner.class: io.confluent.connect.storage.partitioner.TimeBasedPartitioner
+    transforms: "insertTS,formatTS"
+    transforms.insertTS.type: "org.apache.kafka.connect.transforms.InsertField$Value"
+    transforms.insertTS.timestamp.field: "messageTS"
+    transforms.formatTS.type: "org.apache.kafka.connect.transforms.TimestampConverter$Value"
+    transforms.formatTS.format: "yyyy-MM-dd HH:mm:ss:SSS"
+    transforms.formatTS.field: "messageTS"
+    transforms.formatTS.target.type: "string"
     behavior.on.null.values: ignore
+    partition.duration.ms: 3600000
+    path.format: "'year'=YYYY/'month'=MM/'day'=dd"
+    locale: "vi-VN"
+    timezone: "Asia/Ho_Chi_Minh"
