@@ -131,12 +131,25 @@ trino> CREATE TABLE IF NOT EXISTS minio.raw.mytopic(
 )WITH
 (
  	format = 'JSON',
- 	partitioned_by = ARRAY[ 'year', 'month', 'day' ],
+ 	partitioned_by = ARRAY[ 'year', 'month', 'day', 'hour' ],
  	external_location = 's3a://kafka/topics/my-topic'
 );
 trino> CALL minio.system.sync_partition_metadata('raw', 'mytopic', 'FULL');
 trino> select * from minio.raw.mytopic;
-
+trino> CREATE TABLE IF NOT EXISTS minio.raw.mytopic_textfile(
+	json_string             varchar,
+    year                    varchar,
+    month                   varchar,
+    day                     varchar,
+    hour                    varchar
+)WITH
+(
+ 	format = 'TEXTFILE',
+ 	partitioned_by = ARRAY[ 'year', 'month', 'day', 'hour' ],
+ 	external_location = 's3a://kafka/topics/my-topic'
+);
+trino> CALL minio.system.sync_partition_metadata('raw', 'mytopic_textfile', 'FULL');
+trino> select * from minio.raw.mytopic_textfile;
 ```
 ## Destroy kind
 
