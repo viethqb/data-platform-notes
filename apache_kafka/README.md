@@ -66,6 +66,7 @@ kubectl apply -f deployment/kafka/kafka-cluster.yaml
 kubectl apply -f deployment/kafka/connect-configs-topic.yaml
 kubectl apply -f deployment/kafka/connect-offsets-topic.yaml
 kubectl apply -f deployment/kafka/connect-status-topic.yaml
+kubectl apply -f deployment/kafka/my-topic-topic.yaml
 kubectl -n kafka exec -it my-kafka-cluster-kafka-0 bash
 [kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-topics.sh --list --bootstrap-server localhost:9092
 connect-configs
