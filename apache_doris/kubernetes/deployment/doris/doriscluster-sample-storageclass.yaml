@@ -15,7 +15,7 @@ spec:
     password: "12345678"
   feSpec:
     replicas: 3
-    image: selectdb/doris.fe-ubuntu:2.1.1
+    image: selectdb/doris.fe-ubuntu:2.1.2
     service:
       type: NodePort
       servicePorts:
@@ -25,12 +25,12 @@ spec:
           targetPort: 8040
         - nodePort: 31003
           targetPort: 9030
-    limits:
-      cpu: 2
-      memory: 4Gi
-    requests:
-      cpu: 2
-      memory: 4Gi
+    # limits:
+    #   cpu: 2
+    #   memory: 4Gi
+    # requests:
+    #   cpu: 2
+    #   memory: 4Gi
     persistentVolumes:
       - mountPath: /opt/apache-doris/fe/doris-meta
         name: fetest
@@ -55,13 +55,13 @@ spec:
               storage: 10Gi
   beSpec:
     replicas: 3
-    image: selectdb/doris.be-ubuntu:2.1.1
-    limits:
-      cpu: 2
-      memory: 4Gi
-    requests:
-      cpu: 2
-      memory: 4Gi
+    image: selectdb/doris.be-ubuntu:2.1.2
+    # limits:
+    #   cpu: 2
+    #   memory: 4Gi
+    # requests:
+    #   cpu: 2
+    #   memory: 4Gi
     persistentVolumes:
       - mountPath: /opt/apache-doris/be/storage
         name: betest

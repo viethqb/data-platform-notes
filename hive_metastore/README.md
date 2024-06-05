@@ -5,7 +5,7 @@ source: https://github.com/IvanWoo/trino-on-kubernetes
 
 ## Create k8s cluster (kind)
 ```bash
-kind create cluster --name dev --config kind-config.yaml 
+kind create cluster --name dev --config deployment/kind/kind-config.yaml 
 ```
 ## Nginx ingress
 ```bash
@@ -20,7 +20,7 @@ k -n ingress-nginx get po -owide
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm upgrade --install minio -n minio -f ./minio-values.yaml bitnami/minio --create-namespace --debug --version 14.6.0
+helm upgrade --install minio -n minio -f deployment/minio/minio-values.yaml bitnami/minio --create-namespace --debug --version 14.6.0
 kubectl -n minio get po
 kubectl get no -owide
 # NAME                STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION     CONTAINER-RUNTIME
@@ -39,13 +39,13 @@ kubectl get no -owide
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm upgrade --install metastore-db -n metastore -f ./hive-metastore-postgres-values.yaml bitnami/postgresql --create-namespace --debug --version 15.4.2
+helm upgrade --install metastore-db -n metastore -f deployment/hive/hive-metastore-postgres-values.yaml bitnami/postgresql --create-namespace --debug --version 15.4.2
 ```
 ### Hive metastore
 ```bash
 # docker pull rtdl/hive-metastore:3.1.2
 # kind load docker-image rtdl/hive-metastore:3.1.2 --name dev
-helm upgrade --install hive-metastore -n metastore -f ./hive-metastore-values.yaml ../charts/hive-metastore --create-namespace --debug
+helm upgrade --install hive-metastore -n metastore -f deployment/hive/hive-metastore-values.yaml ../charts/hive-metastore --create-namespace --debug
 ```
 
 ## Destroy kind

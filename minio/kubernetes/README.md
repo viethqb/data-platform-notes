@@ -1,6 +1,6 @@
 ## Create k8s cluster (kind)
 ```bash
-kind create cluster --name dev --config kind-config.yaml 
+kind create cluster --name dev --config deployment/kind/kind-config.yaml 
 ```
 
 ## Install Minio on Kubernetes
@@ -8,7 +8,7 @@ kind create cluster --name dev --config kind-config.yaml
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm upgrade --install minio -n minio -f ./minio-values.yaml bitnami/minio --create-namespace --debug --version 14.6.0
+helm upgrade --install minio -n minio -f deployment/minio/minio-values.yaml bitnami/minio --create-namespace --debug --version 14.6.0
 kubectl -n minio get po
 ```
 
