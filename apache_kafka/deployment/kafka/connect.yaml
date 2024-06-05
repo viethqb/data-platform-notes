@@ -6,16 +6,16 @@ metadata:
   annotations:
     strimzi.io/use-connector-resources: "true"
 spec:
-  image: hub.lakehouse.ggg.com.vn/lakehouse/kafka-connect:0.41.0
+  image: viet1846/kafka-connect:0.41.0
   version: 3.7.0
   replicas: 1
-  bootstrapServers: tgs-integration-cluster-kafka-plain-bootstrap:9092
+  bootstrapServers: my-kafka-cluster-kafka-plain-bootstrap:9092
   # tls:
   #   trustedCertificates:
   #     - secretName: my-kafka-cluster-cluster-ca-cert
   #       certificate: ca.crt
   config:
-    bootstrap.servers: tgs-integration-cluster-kafka-plain-bootstrap:9092
+    bootstrap.servers: my-kafka-cluster-kafka-plain-bootstrap:9092
     group.id: connect-cluster
     key.converter: org.apache.kafka.connect.json.JsonConverter
     value.converter: org.apache.kafka.connect.json.JsonConverter
@@ -32,6 +32,7 @@ spec:
     offset.flush.interval.ms: 10000
     plugin.path: /opt/kafka/plugins
     offset.storage.file.filename: /tmp/connect.offsets
+  template:
     connectContainer:
       env:
         - name: AWS_ACCESS_KEY_ID

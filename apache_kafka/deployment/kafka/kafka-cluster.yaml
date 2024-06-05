@@ -12,13 +12,13 @@ spec:
         port: 9092
         type: nodeport
         tls: false
+        configuration:
+          bootstrap:
+            nodePort: 32100
       - name: tls
         port: 9093
         type: internal
         tls: true
-    overrides:
-      bootstrap:
-        nodePort: 32100
     config:
       offsets.topic.replication.factor: 3
       transaction.state.log.replication.factor: 3

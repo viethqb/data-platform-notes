@@ -1,6 +1,12 @@
 ## Create k8s cluster (kind)
 ```bash
-kind create cluster --name dev --config deployment/kind/kind-config.yaml 
+kind create cluster --name dev --config deployment/kind/kind-config.yaml
+kubectl get no -owide
+# NAME                STATUS   ROLES           AGE    VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION     CONTAINER-RUNTIME
+# dev-control-plane   Ready    control-plane   153m   v1.27.3   172.25.0.5    <none>        Debian GNU/Linux 11 (bullseye)   6.5.0-35-generic   containerd://1.7.1
+# dev-worker          Ready    <none>          152m   v1.27.3   172.25.0.4    <none>        Debian GNU/Linux 11 (bullseye)   6.5.0-35-generic   containerd://1.7.1
+# dev-worker2         Ready    <none>          152m   v1.27.3   172.25.0.3    <none>        Debian GNU/Linux 11 (bullseye)   6.5.0-35-generic   containerd://1.7.1
+# dev-worker3         Ready    <none>          152m   v1.27.3   172.25.0.2    <none>        Debian GNU/Linux 11 (bullseye)   6.5.0-35-generic   containerd://1.7.1
 ```
 ## Nginx ingress
 ```bash
@@ -60,6 +66,74 @@ kubectl apply -f deployment/kafka/kafka-cluster.yaml
 kubectl apply -f deployment/kafka/connect-configs-topic.yaml
 kubectl apply -f deployment/kafka/connect-offsets-topic.yaml
 kubectl apply -f deployment/kafka/connect-status-topic.yaml
+kubectl -n kafka exec -it my-kafka-cluster-kafka-0 bash
+[kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+connect-configs
+connect-offsets
+connect-status
+[kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-topics.sh --list --bootstrap-server 172.25.0.2:32100,172.25.0.3:32100,172.25.0.4:32100 #172.25.0.2,172.25.0.3,172.25.0.4 is node ip
+connect-configs
+connect-offsets
+connect-status
+```
+### Produce message to my-topic
+
+```bash
+pip install -r src/requirements.txt
+python3 src/producer.py
+bin/kafka-console-consumer.sh --topic my-topic --from-beginning --bootstrap-server 172.25.0.2:32100,172.25.0.3:32100,172.25.0.4:32100
+```
+### Build kafka connect image
+
+```bash
+# Replace viet1846 by your repository
+docker build -t viet1846/kafka-connect:0.41.0 -f deployment/kafka/Dockerfile deployment/kafka 
+docker push viet1846/kafka-connect:0.41.0
+```
+
+### Create kafka connect and Kafka connector
+```bash
+k apply -f deployment/kafka/connect.yaml
+k apply -f deployment/kafka/connector.yaml
+```
+
+### Query data by Trino
+```bash
+trino> CREATE SCHEMA lakehouse.raw WITH (location = 's3a://lakehouse/raw/');
+
+trino> CREATE TABLE IF NOT EXISTS minio.raw.mytopic(
+	DOLocationID            bigint,
+	RatecodeID              bigint,
+	fare_amount             double,
+	tpep_dropoff_datetime   varchar,
+	congestion_surcharge    double,
+	VendorID                bigint,
+	passenger_count         bigint,
+	tolls_amount            bigint,
+	Airport_fee             bigint,
+	improvement_surcharge   bigint,
+	messageTS               varchar,
+	trip_distance           double,
+	store_and_fwd_flag      varchar,
+	payment_type            bigint,
+	total_amount            double,
+	extra                   bigint,
+	tip_amount              double,
+	mta_tax                 double,
+	tpep_pickup_datetime    varchar,
+	PULocationID            bigint,
+    year                    varchar,
+    month                   varchar,
+    day                     varchar,
+    hour                    varchar
+)WITH
+(
+ 	format = 'JSON',
+ 	partitioned_by = ARRAY[ 'year', 'month', 'day' ],
+ 	external_location = 's3a://kafka/topics/my-topic'
+);
+trino> CALL minio.system.sync_partition_metadata('raw', 'mytopic', 'FULL');
+trino> select * from minio.raw.mytopic;
 
 ```
 ## Destroy kind
