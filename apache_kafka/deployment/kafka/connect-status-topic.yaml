@@ -1,12 +1,12 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: connect-offsets
+  name: connect-status
   namespace: kafka
   labels:
     strimzi.io/cluster: tgs-integration-cluster
 spec:
   partitions: 1
-  replicas: 1
+  replicas: 3
   config:
     cleanup.policy: compact

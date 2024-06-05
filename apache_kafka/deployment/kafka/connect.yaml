@@ -32,17 +32,6 @@ spec:
     offset.flush.interval.ms: 10000
     plugin.path: /opt/kafka/plugins
     offset.storage.file.filename: /tmp/connect.offsets
-  template:
-    pod:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: workload
-                    operator: In
-                    values:
-                      - common-app
     connectContainer:
       env:
         - name: AWS_ACCESS_KEY_ID

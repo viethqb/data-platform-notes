@@ -30,17 +30,17 @@ spec:
           type: persistent-claim
           size: 200Gi
           deleteClaim: false
-    template:
-      pod:
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: workload
-                      operator: In
-                      values:
-                        - common-app
+    # template:
+    #   pod:
+    #     affinity:
+    #       nodeAffinity:
+    #         requiredDuringSchedulingIgnoredDuringExecution:
+    #           nodeSelectorTerms:
+    #             - matchExpressions:
+    #                 - key: workload
+    #                   operator: In
+    #                   values:
+    #                     - common-app
 
   zookeeper:
     replicas: 1
@@ -48,17 +48,17 @@ spec:
       type: persistent-claim
       size: 100Gi
       deleteClaim: false
-    template:
-      pod:
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: workload
-                      operator: In
-                      values:
-                        - common-app
+    # template:
+    #   pod:
+    #     affinity:
+    #       nodeAffinity:
+    #         requiredDuringSchedulingIgnoredDuringExecution:
+    #           nodeSelectorTerms:
+    #             - matchExpressions:
+    #                 - key: workload
+    #                   operator: In
+    #                   values:
+    #                     - common-app
   entityOperator:
     topicOperator: {}
     userOperator: {}
