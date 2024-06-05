@@ -79,6 +79,8 @@ connect-status
 ### Produce message to my-topic
 
 ```bash
+python3 --version         
+# Python 3.10.12
 pip install -r src/requirements.txt
 python3 src/producer.py
 bin/kafka-console-consumer.sh --topic my-topic --from-beginning --bootstrap-server 172.25.0.2:32100,172.25.0.3:32100,172.25.0.4:32100
