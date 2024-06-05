@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnector
 metadata:
-  name: "minio-connector"
+  name: "my-topic-connector"
   namespace: "kafka"
   labels:
     strimzi.io/cluster: connect-cluster
