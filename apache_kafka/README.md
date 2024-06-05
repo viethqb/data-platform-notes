@@ -69,13 +69,16 @@ kubectl apply -f deployment/kafka/connect-status-topic.yaml
 kubectl apply -f deployment/kafka/my-topic-topic.yaml
 kubectl -n kafka exec -it my-kafka-cluster-kafka-0 bash
 [kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-topics.sh --list --bootstrap-server localhost:9092
-connect-configs
-connect-offsets
-connect-status
-[kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-topics.sh --list --bootstrap-server 172.25.0.2:32100,172.25.0.3:32100,172.25.0.4:32100 #172.25.0.2,172.25.0.3,172.25.0.4 is node ip
-connect-configs
-connect-offsets
-connect-status
+# connect-configs
+# connect-offsets
+# connect-status
+# my-topic
+[kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-topics.sh --list --bootstrap-server 172.25.0.2:32100,172.25.0.3:32100,172.25.0.4:32100 
+# 172.25.0.2,172.25.0.3,172.25.0.4 is node ip
+# connect-configs
+# connect-offsets
+# connect-status
+# my-topic
 ```
 ### Produce message to my-topic
 
