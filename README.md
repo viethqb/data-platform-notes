@@ -2,29 +2,33 @@
 
 ![Architecture](./architecture.png)
 
-# Tools
+# Technical Stack
 
-## &check; 1. Kubernets
-### &check; k3s
-### &check; k0s
-### &check; rke2
-### &check; kubeadm
+| Tool               | #1      | Status        |
+| :---:              | :---:   | :---:         |
+| kubernetes         |         | Done          |
+|                    | kubeadm | Done          |
+|                    | k0s     | Done          |
+|                    | rke2    | Done          |
+|                    | k3s     | Done          |
+| Minio              |         | Done          |
+| Hive Metastore     |         | Done          |
+| Trino              |         | Done          |
+| Spark              |         | Not started   |
+| Doris              |         | In Progress   |
+| StarRocks          |         | Not started   |
+| Kafka              |         | In Progress   |
+| Flink              |         | Not started   |
+| RisingWave         |         | Not started   |
+| Airflow            |         | Not started   |
+| Superset           |         | Not started   |
+| Jupyter            |         | Not started   |
+| MLflow             |         | Not started   |
+| Streamlit          |         | Not started   |
+| spring Boot        |         | Not started   |
+| FastAPI            |         | Not started   |
 
-## &check; Minio
-## &check; Hive Metastore
-## &check; Trino
-## &cross; Spark
-## &check; Kafka
-## &check; Airflow
-## &check; Airbyte
-## &cross; Flink
-## &cross; Risingwave
-## &check; Doris
-## &cross; StarRocks
-## &cross; Superset
-## &cross; SpringBoot
-## &cross; MLflow
-## &cross; Jupyter
-## &cross; Jekins
-## &cross; Argo CD
+
+
+
 
