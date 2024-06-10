@@ -17,7 +17,7 @@
 |     Spark       |               |                               Distributed processing engine                                | Not started |
 |     Doris       |               |                                  Real-time data warehouse                                  | In Progress |
 |   StarRocks     |               |                                  Real-time data warehouse                                  | Not started |
-|     Kafka       |               |                                 Stream-processing platform                                 | In Progress |
+|     Kafka       |               |                                 Stream-processing platform                                 |    Done     |
 |     Flink       |               |                                Stream-processing framework                                 | Not started |
 |   RisingWave    |               |                                     streaming database                                     | Not started |
 |    Airflow      |               |                                Workflow management platform                                | Not started |
