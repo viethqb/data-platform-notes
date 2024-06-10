@@ -121,13 +121,14 @@ mysql> update customers set first_name="Sally Marie" where id=1001;
 
 #check 
 k -n kafka exec -it my-kafka-cluster-kafka-0 bash
-[kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic customers --from-beginning
+[kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mysql.inventory.customers --from-beginning
 #{"before":null,"after":{"id":1001,"first_name":"Sally Marie 1","last_name":"Thomas","email":"sally.thomas@acme.com"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1717999936000,"snapshot":"first_in_data_collection","db":"inventory","sequence":null,"table":"customers","server_id":0,"gtid":null,"file":"mysql-bin.000003","pos":953,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1717999936070,"transaction":null}
 #{"before":null,"after":{"id":1002,"first_name":"George","last_name":"Bailey","email":"gbailey@foobar.com"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1717999936000,"snapshot":"true","db":"inventory","sequence":null,"table":"customers","server_id":0,"gtid":null,"file":"mysql-bin.000003","pos":953,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1717999936070,"transaction":null}
 #{"before":null,"after":{"id":1003,"first_name":"Edward","last_name":"Walker","email":"ed@walker.com"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1717999936000,"snapshot":"true","db":"inventory","sequence":null,"table":"customers","server_id":0,"gtid":null,"file":"mysql-bin.000003","pos":953,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1717999936070,"transaction":null}
 #{"before":null,"after":{"id":1004,"first_name":"Anne","last_name":"Kretchmar","email":"annek@noanswer.org"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1717999936000,"snapshot":"last_in_data_collection","db":"inventory","sequence":null,"table":"customers","server_id":0,"gtid":null,"file":"mysql-bin.000003","pos":953,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1717999936070,"transaction":null}
 #{"before":{"id":1001,"first_name":"Sally Marie 1","last_name":"Thomas","email":"sally.thomas@acme.com"},"after":{"id":1001,"first_name":"Sally Marie","last_name":"Thomas","email":"sally.thomas@acme.com"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1718001145000,"snapshot":"false","db":"inventory","sequence":null,"table":"customers","server_id":223344,"gtid":null,"file":"mysql-bin.000003","pos":1197,"row":0,"thread":34,"query":null},"op":"u","ts_ms":1718001145612,"transaction":null}
 
+# Sink to S3 (Minio)
 k apply -f deployment/kafka/sink-mysql-kafka-topic-to-s3-connector.yaml
 ```
 
@@ -153,6 +154,12 @@ data_engineer=# \dt inventory.*
 #  inventory | spatial_ref_sys  | table | data_engineer
 # (6 rows)
 update inventory.customers set first_name='Sally Marie' where id=1001;
+
+#check 
+k -n kafka exec -it my-kafka-cluster-kafka-0 bash
+[kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic postgres.inventory.customers --from-beginning
+
+# Sink to s3 (Minio)
 k apply  -f deployment/kafka/sink-postgres-kafka-topic-to-s3-connector.yaml
 ```
 
