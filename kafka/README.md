@@ -100,7 +100,7 @@ docker push viet1846/kafka-connect:0.41.0
 ### Create kafka connect and Kafka connector
 ```bash
 k apply -f deployment/kafka/connect.yaml
-k apply -f deployment/kafka/connector.yaml
+k apply -f deployment/kafka/sink-my-topic-to-s3-connector.yaml
 ```
 ### Debeziums mysql test
 ```bash
@@ -128,10 +128,34 @@ k -n kafka exec -it my-kafka-cluster-kafka-0 bash
 #{"before":null,"after":{"id":1004,"first_name":"Anne","last_name":"Kretchmar","email":"annek@noanswer.org"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1717999936000,"snapshot":"last_in_data_collection","db":"inventory","sequence":null,"table":"customers","server_id":0,"gtid":null,"file":"mysql-bin.000003","pos":953,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1717999936070,"transaction":null}
 #{"before":{"id":1001,"first_name":"Sally Marie 1","last_name":"Thomas","email":"sally.thomas@acme.com"},"after":{"id":1001,"first_name":"Sally Marie","last_name":"Thomas","email":"sally.thomas@acme.com"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1718001145000,"snapshot":"false","db":"inventory","sequence":null,"table":"customers","server_id":223344,"gtid":null,"file":"mysql-bin.000003","pos":1197,"row":0,"thread":34,"query":null},"op":"u","ts_ms":1718001145612,"transaction":null}
 
-# Sink to minio
-k apply -f deployment/kafka/mysql-sink-s3-connector.yaml
-
+k apply -f deployment/kafka/sink-mysql-kafka-topic-to-s3-connector.yaml
 ```
+
+### Debeziums postgres test
+
+```bash
+# Create postgres DB
+k apply -f deployment/postgres/postgres.yaml
+
+# Create debezium cdc source connector
+k apply -f deployment/kafka/debezium-connector-postgres.yaml
+k apply -f deployment/postgres/postgresql-client.yml
+k -n kafka exec -it postgresql-client sh
+data_engineer=# \dt inventory.*
+#                   List of relations
+#   Schema   |       Name       | Type  |     Owner     
+# -----------+------------------+-------+---------------
+#  inventory | customers        | table | data_engineer
+#  inventory | geom             | table | data_engineer
+#  inventory | orders           | table | data_engineer
+#  inventory | products         | table | data_engineer
+#  inventory | products_on_hand | table | data_engineer
+#  inventory | spatial_ref_sys  | table | data_engineer
+# (6 rows)
+update inventory.customers set first_name='Sally Marie' where id=1001;
+k apply  -f deployment/kafka/sink-postgres-kafka-topic-to-s3-connector.yaml
+```
+
 ### Query data by Trino
 ```bash
 trino> CREATE SCHEMA lakehouse.raw WITH (location = 's3a://lakehouse/raw/');

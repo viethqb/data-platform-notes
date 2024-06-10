@@ -1,0 +1,23 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: debezium-connector-postgres
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: connect-cluster
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector
+  tasksMax: 1
+  config:
+    tasks.max: 1
+    plugin.name: pgoutput
+    database.hostname: postgres.data-source
+    database.port: 5432
+    database.user: "data_engineer"
+    database.password: "password"
+    database.dbname: "data_engineer"
+    database.server.id: 184055
+    topic.prefix: postgres
+    schema.include.list: inventory
+    schema.history.internal.kafka.bootstrap.servers: my-kafka-cluster-kafka-plain-bootstrap:9092
+    schema.history.internal.kafka.topic: schema-changes.inventory
