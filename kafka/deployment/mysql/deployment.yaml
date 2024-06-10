@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: data-source
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - image: quay.io/debezium/example-mysql:2.5
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: debezium
+            - name: MYSQL_USER
+              value: mysqluser
+            - name: MYSQL_PASSWORD
+              value: mysqlpw
+          ports:
+            - containerPort: 3306
+              name: mysql

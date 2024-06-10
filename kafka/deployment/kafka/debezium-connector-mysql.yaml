@@ -1,0 +1,25 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: debezium-connector-mysql
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: connect-cluster
+spec:
+  class: io.debezium.connector.mysql.MySqlConnector
+  tasksMax: 1
+  config:
+    tasks.max: 1
+    database.hostname: mysql.data-source
+    database.port: 3306
+    database.user: root
+    database.password: debezium
+    database.server.id: 184054
+    topic.prefix: mysql
+    database.include.list: inventory
+    schema.history.internal.kafka.bootstrap.servers: my-kafka-cluster-kafka-plain-bootstrap:9092
+    schema.history.internal.kafka.topic: schema-changes.inventory
+    transforms: "route"
+    transforms.route.type: "org.apache.kafka.connect.transforms.RegexRouter"
+    transforms.route.regex: "([^.]+)\\.([^.]+)\\.([^.]+)"
+    transforms.route.replacement: "$3"

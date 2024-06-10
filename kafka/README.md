@@ -102,7 +102,36 @@ docker push viet1846/kafka-connect:0.41.0
 k apply -f deployment/kafka/connect.yaml
 k apply -f deployment/kafka/connector.yaml
 ```
+### Debeziums mysql test
+```bash
+# start mysql source
+k apply -f deployment/kafka/namespace.yaml
+k apply -f deployment/kafka/deployment.yaml
+k apply -f deployment/kafka/serrvice.yaml
 
+# mysql cdc source connector
+k apply -f deployment/kafka/debezium-connector-mysql.yaml
+# update data source
+k run mysql-client --image=mysql:5.7 -it --rm --restart=Never --namespace=kafka -- /bin/bash
+bash-4.2# mysql -uroot -P3306 -hmysql.data-source -p
+mysql> use inventory;
+mysql> update customers set first_name="Sally Marie" where id=1001;
+# Query OK, 1 row affected (0.27 sec)
+# Rows matched: 1  Changed: 1  Warnings: 0
+
+#check 
+k -n kafka exec -it my-kafka-cluster-kafka-0 bash
+[kafka@my-kafka-cluster-kafka-0 kafka]$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic customers --from-beginning
+#{"before":null,"after":{"id":1001,"first_name":"Sally Marie 1","last_name":"Thomas","email":"sally.thomas@acme.com"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1717999936000,"snapshot":"first_in_data_collection","db":"inventory","sequence":null,"table":"customers","server_id":0,"gtid":null,"file":"mysql-bin.000003","pos":953,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1717999936070,"transaction":null}
+#{"before":null,"after":{"id":1002,"first_name":"George","last_name":"Bailey","email":"gbailey@foobar.com"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1717999936000,"snapshot":"true","db":"inventory","sequence":null,"table":"customers","server_id":0,"gtid":null,"file":"mysql-bin.000003","pos":953,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1717999936070,"transaction":null}
+#{"before":null,"after":{"id":1003,"first_name":"Edward","last_name":"Walker","email":"ed@walker.com"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1717999936000,"snapshot":"true","db":"inventory","sequence":null,"table":"customers","server_id":0,"gtid":null,"file":"mysql-bin.000003","pos":953,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1717999936070,"transaction":null}
+#{"before":null,"after":{"id":1004,"first_name":"Anne","last_name":"Kretchmar","email":"annek@noanswer.org"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1717999936000,"snapshot":"last_in_data_collection","db":"inventory","sequence":null,"table":"customers","server_id":0,"gtid":null,"file":"mysql-bin.000003","pos":953,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1717999936070,"transaction":null}
+#{"before":{"id":1001,"first_name":"Sally Marie 1","last_name":"Thomas","email":"sally.thomas@acme.com"},"after":{"id":1001,"first_name":"Sally Marie","last_name":"Thomas","email":"sally.thomas@acme.com"},"source":{"version":"2.4.2.Final","connector":"mysql","name":"mysql","ts_ms":1718001145000,"snapshot":"false","db":"inventory","sequence":null,"table":"customers","server_id":223344,"gtid":null,"file":"mysql-bin.000003","pos":1197,"row":0,"thread":34,"query":null},"op":"u","ts_ms":1718001145612,"transaction":null}
+
+# Sink to minio
+k apply -f deployment/kafka/mysql-sink-s3-connector.yaml
+
+```
 ### Query data by Trino
 ```bash
 trino> CREATE SCHEMA lakehouse.raw WITH (location = 's3a://lakehouse/raw/');
@@ -154,6 +183,22 @@ trino> CREATE TABLE IF NOT EXISTS minio.raw.mytopic_textfile(
 );
 trino> CALL minio.system.sync_partition_metadata('raw', 'mytopic_textfile', 'FULL');
 trino> select * from minio.raw.mytopic_textfile;
+
+
+CREATE TABLE IF NOT EXISTS minio.raw.customers(
+	json_string             varchar,
+    year                    varchar,
+    month                   varchar,
+    day                     varchar,
+    hour                    varchar
+)WITH
+(
+ 	format = 'TEXTFILE',
+ 	partitioned_by = ARRAY[ 'year', 'month', 'day', 'hour' ],
+ 	external_location = 's3a://kafka/topics/customers'
+);
+trino> CALL minio.system.sync_partition_metadata('raw', 'customers', 'FULL');
+trino> select * from minio.raw.customers;
 ```
 ## Destroy kind
 

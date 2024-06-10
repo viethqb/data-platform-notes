@@ -8,7 +8,7 @@ metadata:
 spec:
   image: viet1846/kafka-connect:0.41.0
   version: 3.7.0
-  replicas: 1
+  replicas: 3
   bootstrapServers: my-kafka-cluster-kafka-plain-bootstrap:9092
   # tls:
   #   trustedCertificates:
