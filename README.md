@@ -20,6 +20,7 @@
 |     Kafka       |               |                                 Stream-processing platform                                 |    Done     |
 |     Flink       |               |                                Stream-processing framework                                 | Not started |
 |   RisingWave    |               |                                     streaming database                                     | Not started |
+|    Camel K      |               |                            Open Source integration framework                               | Not started |
 |    Airflow      |               |                                Workflow management platform                                | Not started |
 |    Superset     |               |                          Data exploration and data visualization                           | Not started |
 |Jupyter Notebook |               |        Web-based interactive development environment for notebooks, code, and data.        | Not started |
