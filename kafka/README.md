@@ -216,7 +216,7 @@ trino> CALL minio.system.sync_partition_metadata('raw', 'mytopic_textfile', 'FUL
 trino> select * from minio.raw.mytopic_textfile;
 
 
-CREATE TABLE IF NOT EXISTS minio.raw.customers(
+CREATE TABLE IF NOT EXISTS minio.raw.mysql_customers(
 	json_string             varchar,
     year                    varchar,
     month                   varchar,
@@ -226,10 +226,10 @@ CREATE TABLE IF NOT EXISTS minio.raw.customers(
 (
  	format = 'TEXTFILE',
  	partitioned_by = ARRAY[ 'year', 'month', 'day', 'hour' ],
- 	external_location = 's3a://kafka/topics/customers'
+ 	external_location = 's3a://kafka/topics/mysql.inventory.customers'
 );
-trino> CALL minio.system.sync_partition_metadata('raw', 'customers', 'FULL');
-trino> select * from minio.raw.customers;
+trino> CALL minio.system.sync_partition_metadata('raw', 'mysql_customers', 'FULL');
+trino> select * from minio.raw.mysql_customers;
 ```
 ## Destroy kind
 
