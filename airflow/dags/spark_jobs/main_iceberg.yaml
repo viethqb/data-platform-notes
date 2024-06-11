@@ -1,0 +1,66 @@
+---
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: spark-iceberg-{{ ts_nodash|lower }}-{{ task_instance.try_number }}
+  namespace: spark-operator
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: "viet1846/spark-lakehouse:v1"
+  imagePullPolicy: Always
+  mainApplicationFile: local:///app/etl/main_iceberg.py
+  sparkVersion: "3.4.1"
+  restartPolicy:
+    type: OnFailure
+    onFailureRetries: 3
+    onFailureRetryInterval: 10
+    onSubmissionFailureRetries: 5
+    onSubmissionFailureRetryInterval: 20
+  driver:
+    cores: 1
+    memory: "1024m"
+    labels:
+      version: 3.4.1
+    serviceAccount: spark-operator-spark
+    env:
+      - name: AWS_REGION
+        value: us-east-1
+      - name: AWS_ACCESS_KEY_ID
+        value: admin
+      - name: AWS_SECRET_ACCESS_KEY
+        value: password
+      - name: S3_ENDPOINT
+        value: minio.minio.svc.cluster.local:9000
+      - name: S3_SSL_ENABLE
+        value: "false"
+      - name: S3_PATH_STYLE_ACCESS
+        value: "true"
+      - name: S3_WAREHOUSE
+        value: "s3a://lakehouse/"
+      - name: METASTORE_URI
+        value: "thrift://hive-metastore.metastore.svc.cluster.local:9083"
+  executor:
+    cores: 1
+    instances: 3
+    memory: "2048m"
+    labels:
+      version: 3.4.1
+    env:
+      - name: AWS_REGION
+        value: us-east-1
+      - name: AWS_ACCESS_KEY_ID
+        value: admin
+      - name: AWS_SECRET_ACCESS_KEY
+        value: password
+      - name: S3_ENDPOINT
+        value: minio.minio.svc.cluster.local:9000
+      - name: S3_SSL_ENABLE
+        value: "false"
+      - name: S3_PATH_STYLE_ACCESS
+        value: "true"
+      - name: S3_WAREHOUSE
+        value: "s3a://lakehouse/"
+      - name: METASTORE_URI
+        value: "thrift://hive-metastore.metastore.svc.cluster.local:9083"
