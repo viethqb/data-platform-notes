@@ -87,7 +87,7 @@ Disable SSL: yes
 ### Config Airflow permission to submit Spark job
 ```bash
 kubectl create role spark-operator-submitter --verb=create,get --resource=sparkapplications,pods/log --namespace=spark-operator
-kubectl create rolebinding airflow-worker-spark-submitter --role=spark-operator-submitter --serviceaccount=airflow:airflow-worker --namespace=spark-operator --timeout 600s
+kubectl create rolebinding airflow-worker-spark-submitter --role=spark-operator-submitter --serviceaccount=airflow:airflow-worker --namespace=spark-operator 
 ```
 ## Destroy kind
 

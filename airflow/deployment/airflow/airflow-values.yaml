@@ -3,7 +3,9 @@ defaultAirflowRepository: viet1846/airflow
 defaultAirflowTag: "2.8.3"
 
 airflowVersion: "2.8.3"
-
+images:
+  airflow:
+    pullPolicy: Always
 # Select certain nodes for airflow pods.
 nodeSelector: {}
 affinity: {}
@@ -66,6 +68,8 @@ extraEnv: |
     value: 'Asia/Ho_Chi_Minh'
   - name: AIRFLOW__CORE__DAGBAG_IMPORT_TIMEOUT
     value: '300'
+  - name: AIRFLOW__SCHEDULER__PARSING_CLEANUP_INTERVAL
+    value: '30'
 
 # Airflow database & redis config
 data:
