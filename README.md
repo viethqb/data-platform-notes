@@ -14,7 +14,7 @@
 |     Minio       |               |                                   Object Storage system                                    |    Done     |
 | Hive Metastore  |               |                                   Repository of Metadata                                   |    Done     |
 |     Trino       |               |                         Distributed SQL query & processing engine                          |    Done     |
-|     Spark       |               |                               Distributed processing engine                                | Not started |
+|     Spark       |               |                               Distributed processing engine                                |    Done     |
 |     Doris       |               |                                  Real-time data warehouse                                  | In Progress |
 |   StarRocks     |               |                                  Real-time data warehouse                                  | Not started |
 |     Kafka       |               |                                 Stream-processing platform                                 |    Done     |
