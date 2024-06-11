@@ -15,7 +15,7 @@
 | Hive Metastore  |               |                                   Repository of Metadata                                   |    Done     |
 |     Trino       |               |                         Distributed SQL query & processing engine                          |    Done     |
 |     Spark       |               |                               Distributed processing engine                                |    Done     |
-|     Doris       |               |                                  Real-time data warehouse                                  | In Progress |
+|     Doris       |               |                                  Real-time data warehouse                                  |    Done     |
 |   StarRocks     |               |                                  Real-time data warehouse                                  | Not started |
 |     Kafka       |               |                                 Stream-processing platform                                 |    Done     |
 |     Flink       |               |                                Stream-processing framework                                 | Not started |

@@ -1,8 +1,3 @@
-## Note
-```text
-source: https://github.com/IvanWoo/trino-on-kubernetes
-```
-
 ## Create k8s cluster (kind)
 ```bash
 kind create cluster --name dev --config deployment/kind/kind-config.yaml 
