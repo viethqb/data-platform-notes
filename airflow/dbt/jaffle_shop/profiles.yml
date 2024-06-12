@@ -5,7 +5,7 @@ trino:
       type: trino
       method: none
       user: "{{ env_var('TRINO_USER') }}"
-      host: "{ { env_var('TRINO_HOST') } }"
+      host: "{{ env_var('TRINO_HOST') }}"
       port: "{{ env_var('TRINO_PORT') | int }}"
       http_scheme: http
       database: lakehouse
