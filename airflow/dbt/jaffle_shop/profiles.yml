@@ -6,7 +6,7 @@ trino:
       method: none
       user: "{{ env_var('TRINO_USER') }}"
       host: "{ { env_var('TRINO_HOST') } }"
-      port: "{{ env_var('TRINO_PORT') }}"
+      port: {{ env_var('TRINO_PORT') }}
       http_scheme: http
       database: lakehouse
       schema: jaffle_shop
