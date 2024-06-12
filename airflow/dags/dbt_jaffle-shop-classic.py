@@ -3,7 +3,7 @@ from datetime import datetime
 from cosmos import DbtDag, ProjectConfig, ProfileConfig, DbtTaskGroup
 from cosmos import ExecutionConfig
 
-jaffle_shop_path = Path("/opt/airflow/dags/repo/airflow/dbt/jaffle_shop")
+jaffle_shop_path = Path("/opt/airflow/dags/repo/airflow/dbt/jaffle-shop-classic")
 dbt_executable = Path("/home/airflow/.local/bin/dbt")
 
 venv_execution_config = ExecutionConfig(
@@ -30,6 +30,6 @@ dbt_profile_example = DbtDag(
     schedule_interval="@daily",
     start_date=datetime(2023, 1, 1),
     catchup=False,
-    dag_id="dbt_profile_example",
-    tags=["profiles"],
+    dag_id="dbt_jaffle-shop-classic_example",
+    tags=["dbt"],
 )
