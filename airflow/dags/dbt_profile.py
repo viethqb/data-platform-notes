@@ -1,6 +1,6 @@
 from pathlib import Path
 from datetime import datetime
-from cosmos import DbtDag, ProjectConfig, ProfileConfig
+from cosmos import DbtDag, ProjectConfig, ProfileConfig, DbtTaskGroup
 from cosmos import ExecutionConfig
 
 jaffle_shop_path = Path("/opt/airflow/dags/repo/airflow/dbt/jaffle_shop")
@@ -32,4 +32,8 @@ dbt_profile_example = DbtDag(
     catchup=False,
     dag_id="dbt_profile_example",
     tags=["profiles"],
+)
+
+DbtTaskGroup(
+    DbtTaskGroup
 )
