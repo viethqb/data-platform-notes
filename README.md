@@ -21,7 +21,7 @@
 |     Flink       |               |                                Stream-processing framework                                 | Not started |
 |   RisingWave    |               |                                     streaming database                                     | Not started |
 |    Camel K      |               |                            Open Source integration framework                               | Not started |
-|    Airflow      |               |                                Workflow management platform                                | Not started |
+|    Airflow      |               |                                Workflow management platform                                |    Done     |
 |    Superset     |               |                          Data exploration and data visualization                           | Not started |
 |Jupyter Notebook |               |        Web-based interactive development environment for notebooks, code, and data.        | Not started |
 |     MLflow      |               |                   A platform to streamline machine learning development                    | Not started |
