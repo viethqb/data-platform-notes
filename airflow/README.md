@@ -54,6 +54,8 @@ helm repo add trino https://trinodb.github.io/charts
 helm upgrade --install trino -n trino -f deployment/trino/trino-values.yaml trino/trino --create-namespace --debug --version 0.21.0 --timeout 600s
 
 k -n trino get po
+k -n trino exec -it trino-coordinator-b597bcd8c-f6vf7 trino 
+trino> CREATE SCHEMA lakehouse.jaffle_shop WITH (location = 's3a://lakehouse/jaffle_shop/')
 ```
 
 ## Install Spark Operator
