@@ -69,6 +69,8 @@ helm upgrade --install spark-operator spark-operator/spark-operator --namespace 
 ```bash
 helm repo add airflow https://airflow.apache.org/
 helm upgrade --install airflow airflow/airflow -f deployment/airflow/airflow-values.yaml --namespace airflow --create-namespace --debug --version 1.13.1 --timeout 600s
+
+# kubectl create secret generic airflow-ssh-secret --from-file=gitSshKey=/path/to/.ssh/airflowsshkey -n airflow
 ```
 ### Config S3 Connection and Kubernetes Connection in Airflow UI
 ```yaml
