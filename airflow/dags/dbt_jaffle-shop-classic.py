@@ -1,6 +1,6 @@
 from pathlib import Path
 from datetime import datetime
-from cosmos import DbtDag, ProjectConfig, ProfileConfig, DbtTaskGroup
+from cosmos import DbtDag, ProjectConfig, ProfileConfig
 from cosmos import ExecutionConfig
 
 jaffle_shop_path = Path("/opt/airflow/dags/repo/airflow/dbt/jaffle-shop-classic")
