@@ -9,6 +9,8 @@ dbt_executable = Path("/home/airflow/.local/bin/dbt")
 venv_execution_config = ExecutionConfig(
     dbt_executable_path=str(dbt_executable),
 )
+
+
 dbt_profile_example = DbtDag(
     # dbt/cosmos-specific parameters
     project_config=ProjectConfig(
