@@ -33,7 +33,3 @@ dbt_profile_example = DbtDag(
     dag_id="dbt_profile_example",
     tags=["profiles"],
 )
-
-DbtTaskGroup(
-    DbtTaskGroup
-)
