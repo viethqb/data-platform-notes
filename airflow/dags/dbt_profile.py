@@ -21,7 +21,7 @@ dbt_profile_example = DbtDag(
     ),
     profile_config=ProfileConfig(
         # these map to dbt/jaffle_shop/profiles.yml
-        profile_name="lakehouse",
+        profile_name="trino",
         target_name="dev",
         profiles_yml_filepath=jaffle_shop_path / "profiles.yml",
     ),
