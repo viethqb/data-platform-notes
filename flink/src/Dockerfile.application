@@ -1,0 +1,5 @@
+FROM viet1846/flink-base:1.18.1
+
+WORKDIR /app
+
+COPY *.py .
