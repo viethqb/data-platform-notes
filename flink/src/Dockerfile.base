@@ -61,3 +61,11 @@ RUN echo "-> Install JARs: Kafka" && \
     mkdir -p ./lib/cdc && pushd $_ && \
     curl https://repo1.maven.org/maven2/org/apache/flink/flink-sql-connector-kafka/3.1.0-1.18/flink-sql-connector-kafka-3.1.0-1.18.jar -O && \
     popd
+
+RUN echo "-> Install JARs: Dependencies for Iceberg" && \
+    mkdir -p ./lib/iceberg && pushd $_ && \
+    curl https://repo1.maven.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/2.8.3-10.0/flink-shaded-hadoop-2-uber-2.8.3-10.0.jar -O && \
+    curl https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.20.18/bundle-2.20.18.jar -O && \
+    curl https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-flink/1.5.0/iceberg-flink-1.5.0.jar -O && \
+    curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.12.708/aws-java-sdk-s3-1.12.708.jar -O && \
+    popd

@@ -33,28 +33,24 @@ def pyflink_mysql_cdc_to_kafka():
 
     t_env.execute_sql(
         """
-    CREATE TABLE customers_kafka_sink (
-        `id` BIGINT NOT NULL,
-        `first_name` STRING NOT NULL,
-        `last_name` STRING NOT NULL,
-        `email` STRING NOT NULL,
-        PRIMARY KEY(`id`) NOT ENFORCED
-    ) WITH (
-        'connector' = 'upsert-kafka',
-        'topic' = 'customers-flink',
-        'properties.bootstrap.servers' = 'my-kafka-cluster-kafka-plain-bootstrap.kafka.svc.cluster.local:9092',
-        'properties.group.id' = 'customers-flink-sink',
-        'key.format' = 'json',
-        'key.fields-prefix' = 'key_',
-        'value.format' = 'json',
-        'value.fields-prefix' = 'value_',
-        'value.fields-include' = 'EXCEPT_KEY'
-    )
+    create table customers_iceberg WITH (
+        'connector' = 'iceberg', 
+        'catalog-name' = 'iceberg_catalog', 
+        'io-impl' = 'org.apache.iceberg.aws.s3.S3FileIO', 
+        'client.assume-role.region' = 'us-east-1', 
+        'catalog-type' = 'hive', 'uri' = 'thrift://hive-metastore.metastore.svc.cluster.local:9083', 
+        'warehouse' = 's3://lakehouse', 
+        's3.endpoint' = 'http://minio.minio.svc.cluster.local:9000', 
+        's3.path-style-access' = 'true', 
+        's3.access.key' = 'admin', 
+        's3.secret.key' = 'password', 
+        'format-version' = '2'
+    ) LIKE customers_mysql_cdc_src (EXCLUDING OPTIONS);
     """
     )
 
     t_env.execute_sql(
-        "INSERT INTO customers_kafka_sink SELECT * FROM customers_mysql_cdc_src"
+        "INSERT INTO customers_iceberg SELECT * FROM customers_mysql_cdc_src"
     )
 
 
