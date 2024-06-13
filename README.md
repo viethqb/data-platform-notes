@@ -11,14 +11,14 @@
 |                 |      k0s      |                                  Container orchestration                                   |    Done     |
 |                 |     rke2      |                                  Container orchestration                                   |    Done     |
 |                 |      k3s      |                                  Container orchestration                                   |    Done     |
-|     Minio       |               |                                   Object Storage system                                    |    Done     |
-| Hive Metastore  |               |                                   Repository of Metadata                                   |    Done     |
-|     Trino       |               |                         Distributed SQL query & processing engine                          |    Done     |
+|     Minio       |               |   Secure object storage solution for reliable data storage in distributed environments.    |    Done     |
+| Hive Metastore  |               |      Schema management tool ensuring seamless evolution and organization of data.          |    Done     |
+|     Trino       |               |              High-performance query engine for distributed data processing.                |    Done     |
 |     Spark       |               |                               Distributed processing engine                                |    Done     |
 |     Doris       |               |                                  Real-time data warehouse                                  |    Done     |
 |   StarRocks     |               |                                  Real-time data warehouse                                  | Not started |
 |     Kafka       |               |                                 Stream-processing platform                                 |    Done     |
-|     Flink       |               |                                Stream-processing framework                                 | Not started |
+|     Flink       |               |             Robust stream processing framework for real-time data analytics.               |  In Process |
 |   RisingWave    |               |                                     streaming database                                     | Not started |
 |    Camel K      |               |                            Open Source integration framework                               | Not started |
 |    Airflow      |               |                                Workflow management platform                                |    Done     |
