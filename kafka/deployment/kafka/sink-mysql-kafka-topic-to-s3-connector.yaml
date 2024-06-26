@@ -10,7 +10,7 @@ spec:
   config:
     connector.class: io.confluent.connect.s3.S3SinkConnector
     task.max: "1"
-    topics: mysql.inventory.addresses, mysql.inventory.customers, mysql.inventory.geom, mysql.inventory.orders, mysql.inventory.products, mysql.inventory.products_on_hand, postgres.inventory.addresses, postgres.inventory.customers, postgres.inventory.geom, postgres.inventory.orders, postgres.inventory.products, postgres.inventory.products_on_hand
+    topics: mysql.inventory.addresses, mysql.inventory.customers, mysql.inventory.geom, mysql.inventory.orders, mysql.inventory.products, mysql.inventory.products_on_hand
     s3.region: us-east-1
     s3.bucket.name: kafka
     s3.part.size: "5242880"
