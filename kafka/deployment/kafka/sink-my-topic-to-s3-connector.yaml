@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnector
 metadata:
-  name: "sink-my-topic-to-s3-connector.yaml"
+  name: "sink-my-topic-to-s3-connector"
   namespace: "kafka"
   labels:
     strimzi.io/cluster: connect-cluster
