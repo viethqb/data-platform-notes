@@ -58,11 +58,17 @@ spec:
             - name: SPARGLIM_K8S_IMAGE_PULL_POLICY
               value: "Always"
             - name: SPARK_EXECUTOR_NUMS
-              value: "3"
+              value: "2"
             - name: SPARGLIM_EXECUTOR_REQUEST_MEMORY
-              value: "512m"
+              value: "2G"
             - name: SPARGLIM_EXECUTOR_LIMIT_MEMORY
               value: "2G"
+            - name: SPARGLIM_K8S_EXECUTOR_REQUEST_CORES
+              value: "3"
+            - name: SPARGLIM_EXECUTOR_CORES
+              value: "3"
+            - name: SPARGLIM_K8S_EXECUTOR_LIMIT_CORES
+              value: "3"
             - name: SPARGLIM_SQL_CATALOG_LAKEHOUSE_WAREHOUSE
               value: "s3a://lakehouse/"
             - name: SPARGLIM_SQL_CATALOG_LAKEHOUSE_TYPE
@@ -73,3 +79,5 @@ spec:
               value: "us-east-1"
             - name: AWS_REGION
               value: "us-east-1"
+            - name: S3_SSL_ENABLE
+              value: "false"

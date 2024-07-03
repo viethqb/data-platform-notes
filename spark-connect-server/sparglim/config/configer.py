@@ -120,7 +120,7 @@ class SparkEnvConfiger:
             None,
         ),
         "spark.hadoop.fs.s3a.endpoint": ("S3_ENTRY_POINT", None),
-        "fs.s3a.connection.ssl.enabled": ("S3_SSL_ENABLE", "false"),
+        "spark.hadoop.fs.s3a.connection.ssl.enabled": ("S3_SSL_ENABLE", "false"),
         "spark.hadoop.fs.s3a.endpoint.region": (
             ["S3_ENTRY_POINT_REGION", "AWS_DEFAULT_REGION"],
             None,
@@ -187,7 +187,7 @@ class SparkEnvConfiger:
         "spark.driver.bindAddress": ("SPARGLIM_DRIVER_BINDADDRESS", "0.0.0.0"),
         "spark.kubernetes.driver.pod.name": ("SPARGLIM_DRIVER_POD_NAME", None),
         # Config for executor
-        "spark.kubernetes.executor.cores": (
+        "spark.kubernetes.executor.request.cores": (
             "SPARGLIM_K8S_EXECUTOR_REQUEST_CORES",
             None,
         ),
@@ -197,6 +197,10 @@ class SparkEnvConfiger:
         ),
         "spark.executor.memory": ("SPARGLIM_EXECUTOR_REQUEST_MEMORY", "512m"),
         "spark.executor.memoryOverhead": ("SPARGLIM_EXECUTOR_LIMIT_MEMORY", None),
+        "spark.executor.cores": (
+            "SPARGLIM_EXECUTOR_CORES",
+            "4",
+        ),
         # GPU
         "spark.executor.resource.gpu.vendor": ("SPARGLIM_K8S_GPU_VENDOR", "nvidia.com"),
         "spark.executor.resource.gpu.discoveryScript": (
