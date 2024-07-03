@@ -1,0 +1,12 @@
+auth:
+  rootUser: "admin"
+  rootPassword: "password"
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  hostname: minio.lakehouse.local
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+defaultBuckets: "lakehouse, airflow, risingwave, kafka"
+persistence:
+  size: 50Gi

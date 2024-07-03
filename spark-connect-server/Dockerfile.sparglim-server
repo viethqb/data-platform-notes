@@ -1,0 +1,16 @@
+FROM python:3.10.12-slim-bookworm as builder
+
+RUN pip install build twine hatch
+COPY . /source
+WORKDIR /source
+RUN python -m build
+
+FROM viet1846/spark-lakehouse:v1
+
+COPY --from=builder --chown=executor:executor /source/dist/*.whl /tmp/
+RUN for f in $(echo /tmp/*.whl); do pip install --no-cache-dir $f; done
+
+ENTRYPOINT [ "tini" ,"--"]
+CMD [ "sparglim-server", "start" ]
+
+# docker buildx build --platform linux/amd64,linux/arm64/v8 -t wh1isper/sparglim-server:latest -f docker/Dockerfile.sparglim-server --push .

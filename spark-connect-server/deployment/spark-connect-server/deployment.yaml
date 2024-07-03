@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sparglim-server
+  namespace: sparglim
+  labels:
+    app: sparglim-server
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: sparglim-server
+  template:
+    metadata:
+      labels:
+        app: sparglim-server
+    spec:
+      containers:
+        - name: sparglim-server
+          image: viet1846/sparglim-server
+          ports:
+            - containerPort: 15002
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+          env:
+            - name: SPARGLIM_SERVER_MODE
+              value: "k8s"
+            - name: SPARGLIM_DRIVER_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SPARGLIM_DRIVER_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SPARGLIM_SERVER_CUSTOM_CONFIG
+              # json string for custom config, see https://spark.apache.org/docs/latest/configuration.html
+              value: "{}"
+            - name: AWS_ACCESS_KEY_ID
+              value: "admin"
+            - name: AWS_SECRET_ACCESS_KEY
+              value: "password"
+            - name: S3_ENTRY_POINT
+              value: "minio.minio.svc.cluster.local:9000"
+            - name: S3_HTTP_ENTRY_POINT
+              value: "http://minio.minio.svc.cluster.local:9000"
+            - name: S3_PATH_STYLE_ACCESS
+              value: "true"
+            - name: SPARGLIM_K8S_IMAGE
+              value: "viet1846/spark-iceberg:3.4.1"
+            - name: SPARGLIM_K8S_IMAGE_PULL_POLICY
+              value: "Always"
+            - name: SPARK_EXECUTOR_NUMS
+              value: "3"
+            - name: SPARGLIM_EXECUTOR_REQUEST_MEMORY
+              value: "512m"
+            - name: SPARGLIM_EXECUTOR_LIMIT_MEMORY
+              value: "2G"
+            - name: SPARGLIM_SQL_CATALOG_LAKEHOUSE_WAREHOUSE
+              value: "s3a://lakehouse/"
+            - name: SPARGLIM_SQL_CATALOG_LAKEHOUSE_TYPE
+              value: "hive"
+            - name: SPARGLIM_SQL_CATALOG_LAKEHOUSE_URI
+              value: "thrift://hive-metastore.metastore.svc.cluster.local:9083"
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
+            - name: AWS_REGION
+              value: "us-east-1"
