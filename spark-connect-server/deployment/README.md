@@ -64,6 +64,12 @@ kubectl create clusterrolebinding serviceaccounts-cluster-admin --clusterrole=cl
 kubectl apply -f spark-connect-server/
 ```
 
+## Test Spark Connect Server
+```bash
+pip install pyspark==3.4.1 grpcio-status 
+python3 demo.py
+```
+
 ## Destroy kind
 
 ```bash
