@@ -95,28 +95,10 @@ root@kmaster3:~# helm upgrade --install longhorn longhorn/longhorn --set persist
 root@kmaster3:~# kubectl -n longhorn-system get po
 
 # Install Metric server
-root@kmaster3:~# wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-# tls failed to verify certificate x509
-# The workaround that fixed the issue for me was to add --kubelet-insecure-tls in the deployment.
-#    spec:
-#      containers:
-#      - args:
-#        - --kubelet-insecure-tls
-#        - --cert-dir=/tmp
-#        - --secure-port=10250
-#        - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
-#        - --kubelet-use-node-status-port
-#        - --metric-resolution=15s
-
-root@kmaster3:~# kubectl apply -f components.yaml
+root@kmaster3:~# kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+root@kmaster3:~# kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
 root@kmaster3:~# kubectl top no
-# NAME       CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
-# kmaster1   169m         8%     1327Mi          71%       
-# kmaster2   92m          4%     1082Mi          58%       
-# kmaster3   108m         5%     1068Mi          57%       
-# kworker1   24m          2%     552Mi           64%       
-# kworker2   16m          1%     500Mi           58%       
-# kworker3   14m          1%     526Mi           61% 
+root@kmaster3:~# kubectl -n ingress-nginx top po
 ```
 
 ## destroy cluster
