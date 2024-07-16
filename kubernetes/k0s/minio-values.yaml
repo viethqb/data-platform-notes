@@ -9,4 +9,4 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-body-size: 1024m
 defaultBuckets: "lakehouse, airflow, risingwave, kafka"
 persistence:
-  size: 10Gi
+  size: 5Gi
