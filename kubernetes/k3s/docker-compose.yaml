@@ -1,14 +1,4 @@
 services:
-  loadbalancer:
-    hostname: loadbalancer
-    container_name: loadbalancer
-    build:
-      context: .
-      dockerfile: Dockerfile
-    runtime: sysbox-runc
-    networks:
-      k3s_network:
-        ipv4_address: 172.25.1.2
   master-1:
     hostname: master-1
     container_name: master-1
