@@ -23,3 +23,14 @@ additionalCatalogs:
     hive.non-managed-table-writes-enabled=true
     hive.storage-format=ORC
     hive.partition-projection-enabled=true
+  postgresql: |
+    connector.name=postgresql
+    connection-url=jdbc:postgresql://postgres.data-source.svc.cluster.local:5432/data_engineer
+    connection-user=data_engineer
+    connection-password=password
+  mysql: |
+    connector.name=mysql
+    connection-url=jdbc:mysql://mysql.data-source.svc.cluster.local:3306?zeroDateTimeBehavior=convertToNull
+    connection-user=root
+    connection-password=debezium
+    case-insensitive-name-matching=true
