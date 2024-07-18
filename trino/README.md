@@ -15,6 +15,22 @@ helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx --set controlle
 
 k -n ingress-nginx get po -owide
 ```
+
+## Install Mysql Data Source
+```bash
+k apply -f deployment/kafka/namespace.yaml
+k apply -f deployment/kafka/deployment.yaml
+k apply -f deployment/kafka/serrvice.yaml
+```
+
+## Install PostgreSQL Data Source
+```bash
+k apply -f deployment/kafka/debezium-connector-postgres.yaml
+k apply -f deployment/postgres/postgresql-client.yml
+k -n kafka exec -it postgresql-client sh
+data_engineer=# \dt inventory.*
+```
+
 ## Install Minio on Kubernetes
 
 ```bash
