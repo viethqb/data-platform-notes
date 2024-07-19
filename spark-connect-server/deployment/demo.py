@@ -1,8 +1,10 @@
 from pyspark.sql import SparkSession
 from datetime import datetime, date
 from pyspark.sql import Row
+import os
 
-spark = SparkSession.builder.remote("sc://172.25.0.2:30052").getOrCreate()
+SPARK_CONNECT_SERVER = os.getenv("SPARK_CONNECT_SERVER", "sc://172.25.0.2:30052")
+spark = SparkSession.builder.remote(SPARK_CONNECT_SERVER).getOrCreate()
 
 df = spark.createDataFrame(
     [
