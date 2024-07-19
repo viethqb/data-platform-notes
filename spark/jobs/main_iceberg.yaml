@@ -41,6 +41,8 @@ spec:
         value: "s3a://lakehouse/"
       - name: METASTORE_URI
         value: "thrift://hive-metastore.metastore.svc.cluster.local:9083"
+      - name: DATA_PATH
+        value: "s3a://lakehouse/raw/yellow_tripdata/"
   executor:
     cores: 1
     instances: 3
@@ -64,3 +66,5 @@ spec:
         value: "s3a://lakehouse/"
       - name: METASTORE_URI
         value: "thrift://hive-metastore.metastore.svc.cluster.local:9083"
+      - name: DATA_PATH
+        value: "s3a://lakehouse/raw/yellow_tripdata/"
