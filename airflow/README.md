@@ -65,8 +65,19 @@ helm repo add spark-operator https://kubeflow.github.io/spark-operator
 helm upgrade --install spark-operator spark-operator/spark-operator --namespace spark-operator --set webhook.enable=true --set image.tag=v1beta2-1.4.6-3.5.0 --create-namespace --debug --version 1.3.2 --timeout 600s
 ```
 
+## Install Spark Connect Server
+
+```bash
+kubectl create ns sparglim
+kubectl create clusterrolebinding serviceaccounts-cluster-admin --clusterrole=cluster-admin --group=system:serviceaccounts
+kubectl apply -f deployment/spark-connect-server/
+```
+
+
 ## Install Airflow
 ```bash
+# docker build -t viet1846/airflow:2.8.3 .
+# docker push viet1846/airflow:2.8.3
 helm repo add airflow https://airflow.apache.org/
 helm upgrade --install airflow airflow/airflow -f deployment/airflow/airflow-values.yaml --namespace airflow --create-namespace --debug --version 1.13.1 --timeout 600s
 
