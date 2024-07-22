@@ -1,6 +1,7 @@
 from __future__ import print_function
 from builtins import range
-from airflow.operators import PythonOperator
+from airflow.operators.empty import EmptyOperator
+from airflow.operators.python_operator import PythonOperator
 from airflow.models import DAG
 from pyspark.sql import SparkSession
 from datetime import datetime, date
@@ -8,7 +9,6 @@ from pyspark.sql import Row
 import os
 import time
 from pprint import pprint
-from airflow.operators.empty import EmptyOperator
 
 seven_days_ago = datetime.combine(datetime.today() - timedelta(7), datetime.min.time())
 
