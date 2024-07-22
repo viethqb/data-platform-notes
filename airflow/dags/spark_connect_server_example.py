@@ -17,7 +17,9 @@ args = {
     "start_date": seven_days_ago,
 }
 
-dag = DAG(dag_id="example_python_operator", default_args=args, schedule_interval=None)
+dag = DAG(
+    dag_id="spark_connect_server_example", default_args=args, schedule_interval=None
+)
 
 
 def spark_connect_server_example():
