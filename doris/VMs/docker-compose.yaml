@@ -1,4 +1,14 @@
 services:
+  loadbalancer:
+    hostname: loadbalancer
+    container_name: loadbalancer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: sysbox-runc
+    networks:
+      doris_network:
+        ipv4_address: 172.25.2.2
   doris-1:
     hostname: doris-1
     container_name: doris-1
