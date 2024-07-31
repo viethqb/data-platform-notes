@@ -33,6 +33,6 @@ producer = KafkaProducer(
 
 while 1 == 1:
     user = get_register()
-    print(user)
+    # print(user)
     producer.send("users", user)
     time.sleep(1)
